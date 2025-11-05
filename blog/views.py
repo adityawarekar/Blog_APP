@@ -1,4 +1,10 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+
 def test(request):
-    return HttpResponse('hello world')
+    return render(request, 'blog/login.html')
+
+def signup_view(request):
+    if request.method == 'POST':
+       
+        pass
+    return render(request, 'blog/signup.html')
