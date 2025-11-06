@@ -62,6 +62,34 @@ def home_view(request):
     return render(request, 'blog/home.html', {'user': request.user, 'posts': posts})
 
 
+
+def create_post_view(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        if title and content:
+            Posts.objects.create(title=title, content=content, author=request.user)
+            messages.success(request, "Post created successfully!")
+            return redirect('explore')
+        else:
+            messages.error(request, "Please fill all fields.")
+    
+    return render(request, 'blog/create_post.html')
+
+def explore_view(request):
+    posts = Posts.objects.all().order_by('-date_posted')
+    return render(request, 'blog/explore.html', {'posts': posts})
+
+def profile_view(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    user_posts = Posts.objects.filter(author=request.user).order_by('-date_posted')
+    return render(request, 'blog/profile.html', {'user': request.user, 'posts': user_posts})
+
+
 def logout_view(request):
     logout(request)
     messages.success(request, "You have been logged out successfully.")
