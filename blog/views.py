@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from .models import Posts
 
 def login_view(request):
     if request.user.is_authenticated:
@@ -47,7 +48,7 @@ def signup_view(request):
             password=password
         )
         user.save()
-        messages.success(request, "Account created successfully! Please login.")  # ✅ fixed typo
+        messages.success(request, "Account created successfully! Please login.")
         return redirect('login')
 
     return render(request, 'blog/signup.html')
@@ -56,8 +57,9 @@ def signup_view(request):
 def home_view(request):
     if not request.user.is_authenticated:
         return redirect('login')
-
-    return render(request, 'blog/home.html', {'user': request.user})
+    
+    posts = Posts.objects.all().order_by('-date_posted')
+    return render(request, 'blog/home.html', {'user': request.user, 'posts': posts})
 
 
 def logout_view(request):
