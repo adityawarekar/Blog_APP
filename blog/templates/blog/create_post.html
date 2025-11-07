@@ -1,29 +1,27 @@
 {% extends 'blog/base.html' %}
+{% block title %}Create Post{% endblock %}
 {% block content %}
-<div class="container mt-5">
-  <div class="card shadow-lg border-0 rounded-4 bg-light p-5 mx-auto" style="max-width: 700px;">
-    <h2 class="text-center text-success mb-4 fw-bold">📝 Create a New Post</h2>
+<div class="card shadow p-4 mx-auto" style="max-width: 700px;">
+  <h3 class="text-center text-success mb-3 fw-bold">🪴 Create a New Post</h3>
 
-    <form method="POST" class="text-start">
-      {% csrf_token %}
-      <div class="mb-3">
-        <label class="form-label text-success fw-semibold">Title</label>
-        <input type="text" name="title" class="form-control rounded-3 border-success" placeholder="Enter post title" required>
-      </div>
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label class="form-label text-success fw-semibold">Title</label>
+      <input type="text" name="title" class="form-control border-success" required>
+    </div>
 
-      <div class="mb-3">
-        <label class="form-label text-success fw-semibold">Content</label>
-        <textarea name="content" class="form-control rounded-3 border-success" rows="5" placeholder="Write your content..." required></textarea>
-      </div>
+    <div class="mb-3">
+      <label class="form-label text-success fw-semibold">Content</label>
+      <textarea name="content" rows="5" class="form-control border-success" required></textarea>
+    </div>
 
-      <div class="mb-3">
-        <label class="form-label text-success fw-semibold">Publish Date</label>
-        <input type="text" class="form-control rounded-3 border-success bg-white" value="{{ now|date:'M d, Y — H:i A' }}" readonly>
-        <small class="text-muted">Your post will include this date & time automatically.</small>
-      </div>
+    <div class="mb-3">
+      <label class="form-label text-success fw-semibold">Upload Image</label>
+      <input type="file" name="image" accept="image/*" class="form-control border-success">
+    </div>
 
-      <button type="submit" class="btn btn-success w-100 mt-3 py-2 rounded-pill shadow-sm">🌿 Publish Post</button>
-    </form>
-  </div>
+    <button type="submit" class="btn btn-success w-100 py-2">Publish</button>
+  </form>
 </div>
 {% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'blog/base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h2 class="text-success text-center mb-4">📈 Posts Analytics</h2>
+<div class="card shadow p-4">
+  <canvas id="postsChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const labels = {{ labels|safe }};
+const data = {{ data|safe }};
+const ctx = document.getElementById('postsChart');
+new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: labels,
+    datasets: [{
+      label: 'Posts per Month',
+      data: data,
+      borderWidth: 1,
+      backgroundColor: '#198754'
+    }]
+  },
+  options: { scales: { y: { beginAtZero: true } } }
+});
+</script>
+{% endblock %}

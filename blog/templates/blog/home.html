@@ -1,46 +1,23 @@
 {% extends 'blog/base.html' %}
-{% load static %}
+{% block title %}Home{% endblock %}
 {% block content %}
-<div class="container mt-5">
+<h2 class="text-success fw-bold text-center mb-4">Welcome {{ user.first_name }} 👋</h2>
 
-  <!-- 🌿 Welcome Card -->
-  <div class="card shadow-lg border-0 rounded-4 bg-light">
-    <div class="card-body text-center p-5">
-      <h1 class="fw-bold text-success mb-3">🌿 Welcome to <span class="text-success-emphasis">GreenBlog</span></h1>
-      <p class="text-muted fs-5 mb-4">
-        Where ideas grow, stories bloom, and creativity thrives 🌱
-      </p>
-
-      <div class="d-flex justify-content-center flex-wrap gap-3">
-        <a href="{% url 'explore' %}" class="btn btn-outline-success px-4 py-2 rounded-pill shadow-sm">🌍 Explore Blogs</a>
-        <a href="{% url 'create_post' %}" class="btn btn-outline-success px-4 py-2 rounded-pill shadow-sm">📝 Create Post</a>
-        <a href="{% url 'profile' %}" class="btn btn-outline-success px-4 py-2 rounded-pill shadow-sm">👤 My Profile</a>
-      </div>
-
-      <hr class="my-5 w-50 mx-auto border-success border-opacity-50">
-
-      <a href="{% url 'logout' %}" class="btn btn-danger px-4 py-2 rounded-pill shadow-sm">Logout</a>
-    </div>
+{% for post in posts %}
+<div class="card shadow-sm mb-4">
+  {% if post.image %}
+    <img src="{{ post.image.url }}" class="card-img-top" alt="{{ post.title }}">
+  {% endif %}
+  <div class="card-body">
+    <h4 class="card-title">{{ post.title }}</h4>
+    <p class="card-text">{{ post.content|truncatechars:200 }}</p>
+    <a href="{% url 'post_detail' slug=post.slug %}" class="btn btn-success btn-sm">Read More</a>
   </div>
-
-  <!-- 📝 Latest Posts Section -->
-  <div class="mt-5 pt-4">
-    <h2 class="text-center text-success fw-bold mb-4">🪴 Latest Posts</h2>
-
-    {% for post in posts %}
-    <div class="card mb-4 shadow-sm border-0 rounded-4">
-      <div class="card-body bg-white rounded-4 p-4">
-        <h4 class="card-title text-dark fw-bold mb-2">{{ post.title }}</h4>
-        <p class="card-text text-muted">{{ post.content|truncatechars:250 }}</p>
-        <p class="text-secondary small mt-3 mb-0">
-          Posted by <strong class="text-success">{{ post.author.first_name }}</strong> 
-          on <span class="text-dark">{{ post.date_posted|date:"M d, Y · H:i A" }}</span>
-        </p>
-      </div>
-    </div>
-    {% empty %}
-    <p class="text-center text-muted">No posts yet. Add one from the Create Post page!</p>
-    {% endfor %}
+  <div class="card-footer text-muted small">
+    Posted by {{ post.author.first_name }} · {{ post.date_posted|date:"M d, Y H:i" }}
   </div>
 </div>
+{% empty %}
+<p class="text-muted text-center">No posts yet. Create your first one!</p>
+{% endfor %}
 {% endblock %}

@@ -1,18 +1,28 @@
 {% extends 'blog/base.html' %}
+{% block title %}Explore{% endblock %}
 {% block content %}
-<div class="container mt-5">
-  <h2 class="text-center text-success mb-4">🌍 Explore Blogs</h2>
+<h2 class="text-success fw-bold text-center mb-4">🌎 Explore Posts</h2>
 
-  {% for post in posts %}
-  <div class="card mb-3 shadow-sm">
-    <div class="card-body">
-      <h4>{{ post.title }}</h4>
-      <p>{{ post.content|truncatechars:200 }}</p>
-      <small class="text-muted">By {{ post.author.first_name }} on {{ post.date_posted|date:"M d, Y" }}</small>
-    </div>
+<form method="get" class="d-flex justify-content-center mb-4">
+  <input type="text" name="q" value="{{ q }}" class="form-control w-50 me-2" placeholder="Search posts...">
+  <button class="btn btn-success">Search</button>
+</form>
+
+{% for post in posts %}
+<div class="card shadow-sm mb-4">
+  {% if post.image %}
+  <img src="{{ post.image.url }}" class="card-img-top" alt="{{ post.title }}">
+  {% endif %}
+  <div class="card-body">
+    <h5>{{ post.title }}</h5>
+    <p>{{ post.content|truncatechars:150 }}</p>
+    <a href="{% url 'post_detail' slug=post.slug %}" class="btn btn-success btn-sm">Read More</a>
   </div>
-  {% empty %}
-  <p class="text-center text-muted">No blogs yet. Be the first to post!</p>
-  {% endfor %}
+  <div class="card-footer text-muted small">
+    By {{ post.author.first_name }} • {{ post.date_posted|date:"M d, Y" }}
+  </div>
 </div>
+{% empty %}
+<p class="text-center text-muted">No results found.</p>
+{% endfor %}
 {% endblock %}
