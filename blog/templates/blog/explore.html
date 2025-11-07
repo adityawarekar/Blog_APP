@@ -1,28 +1,51 @@
 {% extends 'blog/base.html' %}
 {% block title %}Explore{% endblock %}
 {% block content %}
-<h2 class="text-success fw-bold text-center mb-4">🌎 Explore Posts</h2>
+
+<h2 class="text-success fw-bold text-center mb-4">🌎 Explore Blogs</h2>
 
 <form method="get" class="d-flex justify-content-center mb-4">
-  <input type="text" name="q" value="{{ q }}" class="form-control w-50 me-2" placeholder="Search posts...">
-  <button class="btn btn-success">Search</button>
+  <input 
+    type="text" 
+    name="q" 
+    value="{{ q }}" 
+    class="form-control w-50 me-2 shadow-sm" 
+    placeholder="Search blogs..."
+  >
+  <button class="btn btn-success px-4">Search</button>
 </form>
 
-{% for post in posts %}
-<div class="card shadow-sm mb-4">
-  {% if post.image %}
-  <img src="{{ post.image.url }}" class="card-img-top" alt="{{ post.title }}">
-  {% endif %}
-  <div class="card-body">
-    <h5>{{ post.title }}</h5>
-    <p>{{ post.content|truncatechars:150 }}</p>
-    <a href="{% url 'post_detail' slug=post.slug %}" class="btn btn-success btn-sm">Read More</a>
+<div class="d-flex flex-column align-items-center">
+  {% for post in posts %}
+  <div class="card shadow border-0 mb-5" 
+       style="max-width: 850px; width: 100%; border-radius: 16px; overflow: hidden;">
+       
+    {% if post.image %}
+      <div style="width: 100%; height: 420px; overflow: hidden;">
+        <img 
+          src="{{ post.image.url }}" 
+          alt="{{ post.title }}" 
+          style="width: 100%; height: 100%; object-fit: cover;"
+        >
+      </div>
+    {% endif %}
+    
+    <div class="card-body p-4">
+      <h3 class="fw-bold text-success">{{ post.title }}</h3>
+      <p class="text-muted small mb-3">
+        👤 {{ post.author.first_name }} • {{ post.date_posted|date:"M d, Y" }}
+      </p>
+      <p class="text-dark" style="line-height: 1.7;">
+        {{ post.content|truncatechars:350 }}
+      </p>
+      <a href="{% url 'post_detail' slug=post.slug %}" class="btn btn-outline-success">
+        Read Full Blog →
+      </a>
+    </div>
   </div>
-  <div class="card-footer text-muted small">
-    By {{ post.author.first_name }} • {{ post.date_posted|date:"M d, Y" }}
-  </div>
+  {% empty %}
+  <p class="text-center text-muted mt-4">No blogs found.</p>
+  {% endfor %}
 </div>
-{% empty %}
-<p class="text-center text-muted">No results found.</p>
-{% endfor %}
+
 {% endblock %}

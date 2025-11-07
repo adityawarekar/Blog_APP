@@ -1,23 +1,83 @@
 {% extends 'blog/base.html' %}
+{% load static %}
 {% block title %}Home{% endblock %}
-{% block content %}
-<h2 class="text-success fw-bold text-center mb-4">Welcome {{ user.first_name }} 👋</h2>
 
-{% for post in posts %}
-<div class="card shadow-sm mb-4">
-  {% if post.image %}
-    <img src="{{ post.image.url }}" class="card-img-top" alt="{{ post.title }}">
-  {% endif %}
-  <div class="card-body">
-    <h4 class="card-title">{{ post.title }}</h4>
-    <p class="card-text">{{ post.content|truncatechars:200 }}</p>
-    <a href="{% url 'post_detail' slug=post.slug %}" class="btn btn-success btn-sm">Read More</a>
-  </div>
-  <div class="card-footer text-muted small">
-    Posted by {{ post.author.first_name }} · {{ post.date_posted|date:"M d, Y H:i" }}
+{% block content %}
+<!-- Welcome Section -->
+<h2 class="text-success fw-bold text-center mb-3">🌿 Welcome {{ user.first_name }} 👋</h2>
+<h5 class="text-center text-muted mb-5">
+  Discover inspiring eco stories and sustainable living blogs
+</h5>
+
+<!-- About Section -->
+<section class="container text-center mb-5 p-4 rounded-4 shadow-sm" style="background-color: #f9faf9;">
+  <h3 class="fw-bold text-success mb-3">About EcoBlogs</h3>
+  <p class="text-muted" style="max-width: 800px; margin: 0 auto; line-height: 1.8;">
+    EcoBlogs is a community-driven platform that connects passionate individuals 
+    who care about the planet. 🌍 Whether you’re into sustainable fashion, green technology, 
+    or zero-waste living — this is your space to explore ideas, share experiences, 
+    and inspire others to live more sustainably.
+  </p>
+  <a href="{% url 'explore' %}" class="btn btn-outline-success mt-4 fw-semibold rounded-pill px-4">
+    Start Exploring →
+  </a>
+</section>
+
+<!-- Blog Cards Section -->
+<div class="container mt-5">
+  <h3 class="fw-bold text-success mb-4 text-center">🌱 Latest Eco Blogs</h3>
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for post in posts %}
+      <div class="col">
+        <div class="card h-100 shadow border-0 rounded-4 overflow-hidden"
+             style="transition: transform 0.3s ease, box-shadow 0.3s ease;">
+
+          {% if post.image %}
+            <div class="ratio ratio-16x9">
+              <img src="{{ post.image.url }}" class="card-img-top" alt="{{ post.title }}"
+                   style="object-fit: cover; width: 100%; height: 100%;">
+            </div>
+          {% else %}
+            <div class="ratio ratio-16x9">
+              <img src="{% static 'default.jpg' %}" class="card-img-top" alt="default image"
+                   style="object-fit: cover; width: 100%; height: 100%;">
+            </div>
+          {% endif %}
+
+          <div class="card-body p-4">
+            <h4 class="card-title text-success fw-bold mb-3">{{ post.title }}</h4>
+            <p class="card-text text-muted mb-3" style="font-size: 0.95rem;">
+              {{ post.content|truncatewords:30 }}
+            </p>
+            <a href="{% url 'post_detail' slug=post.slug %}"
+               class="btn btn-success w-100 fw-semibold rounded-pill">
+               Read More
+            </a>
+          </div>
+
+          <div class="card-footer bg-light border-0 py-3 px-4 d-flex justify-content-between align-items-center small text-muted">
+            <span>👤 {{ post.author.username }}</span>
+            <span>{{ post.date_posted|date:"M d, Y" }}</span>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <div class="text-center">
+        <p class="text-muted">No posts yet. Create your first one!</p>
+        <a href="{% url 'create_post' %}" class="btn btn-success">Create Post</a>
+      </div>
+    {% endfor %}
   </div>
 </div>
-{% empty %}
-<p class="text-muted text-center">No posts yet. Create your first one!</p>
-{% endfor %}
+
+<!-- Hover & Card Styling -->
+<style>
+  .card {
+    min-height: 480px;
+  }
+  .card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  }
+</style>
 {% endblock %}
