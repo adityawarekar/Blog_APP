@@ -3,81 +3,266 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<!-- Welcome Section -->
-<h2 class="text-success fw-bold text-center mb-3">🌿 Welcome {{ user.first_name }} 👋</h2>
-<h5 class="text-center text-muted mb-5">
-  Discover inspiring eco stories and sustainable living blogs
-</h5>
 
-<!-- About Section -->
-<section class="container text-center mb-5 p-4 rounded-4 shadow-sm" style="background-color: #f9faf9;">
-  <h3 class="fw-bold text-success mb-3">About EcoBlogs</h3>
-  <p class="text-muted" style="max-width: 800px; margin: 0 auto; line-height: 1.8;">
-    EcoBlogs is a community-driven platform that connects passionate individuals 
-    who care about the planet. 🌍 Whether you’re into sustainable fashion, green technology, 
-    or zero-waste living — this is your space to explore ideas, share experiences, 
-    and inspire others to live more sustainably.
-  </p>
-  <a href="{% url 'explore' %}" class="btn btn-outline-success mt-4 fw-semibold rounded-pill px-4">
-    Start Exploring →
-  </a>
+<div class="hero-section text-center py-5 mb-5">
+  <div class="container">
+    <h1 class="display-4 fw-bold text-white mb-3">
+      🌿 Welcome back, {{ user.first_name }}!
+    </h1>
+    <p class="lead text-white-50 mb-4">
+      Join our community of eco-warriors sharing stories for a greener tomorrow
+    </p>
+  </div>
+</div>
+
+
+<section class="container mb-5">
+  <div class="about-card p-5 rounded-4">
+    <div class="row align-items-center">
+      <div class="col-lg-8 mx-auto text-center">
+        <span class="badge bg-light text-success px-3 py-2 rounded-pill mb-3">About Us</span>
+        <h2 class="fw-bold mb-4" style="color: #1a5f3f;">What is EcoBlogs?</h2>
+        <p class="text-secondary" style="font-size: 1.1rem; line-height: 1.9;">
+          A vibrant space where environmental enthusiasts unite to share knowledge, 
+          inspire change, and build a sustainable future together. From eco-friendly 
+          living tips to green innovation — every voice matters here. 🌍
+        </p>
+        <a href="{% url 'explore' %}" class="btn btn-custom mt-3 px-5 py-3 rounded-pill">
+          Explore Stories
+          <i class="ms-2">→</i>
+        </a>
+      </div>
+    </div>
+  </div>
 </section>
 
-<!-- Blog Cards Section -->
-<div class="container mt-5">
-  <h3 class="fw-bold text-success mb-4 text-center">🌱 Latest Eco Blogs</h3>
-  <div class="row row-cols-1 row-cols-md-3 g-4">
+
+<div class="container mt-5 mb-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h2 class="fw-bold mb-1" style="color: #1a5f3f;">Latest Stories</h2>
+      <p class="text-muted mb-0">Fresh perspectives on sustainable living</p>
+    </div>
+  </div>
+
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
     {% for post in posts %}
       <div class="col">
-        <div class="card h-100 shadow border-0 rounded-4 overflow-hidden"
-             style="transition: transform 0.3s ease, box-shadow 0.3s ease;">
-
-          {% if post.image %}
-            <div class="ratio ratio-16x9">
-              <img src="{{ post.image.url }}" class="card-img-top" alt="{{ post.title }}"
-                   style="object-fit: cover; width: 100%; height: 100%;">
-            </div>
-          {% else %}
-            <div class="ratio ratio-16x9">
-              <img src="{% static 'default.jpg' %}" class="card-img-top" alt="default image"
-                   style="object-fit: cover; width: 100%; height: 100%;">
-            </div>
-          {% endif %}
-
-          <div class="card-body p-4">
-            <h4 class="card-title text-success fw-bold mb-3">{{ post.title }}</h4>
-            <p class="card-text text-muted mb-3" style="font-size: 0.95rem;">
-              {{ post.content|truncatewords:30 }}
-            </p>
-            <a href="{% url 'post_detail' slug=post.slug %}"
-               class="btn btn-success w-100 fw-semibold rounded-pill">
-               Read More
-            </a>
+        <div class="blog-card h-100 rounded-4">
+          
+          <div class="blog-image-wrapper">
+            {% if post.image %}
+              <img src="{{ post.image.url }}" class="blog-image" alt="{{ post.title }}">
+            {% else %}
+              <img src="{% static 'default.jpg' %}" class="blog-image" alt="default image">
+            {% endif %}
+            <div class="blog-overlay"></div>
           </div>
 
-          <div class="card-footer bg-light border-0 py-3 px-4 d-flex justify-content-between align-items-center small text-muted">
-            <span>👤 {{ post.author.username }}</span>
-            <span>{{ post.date_posted|date:"M d, Y" }}</span>
+          <div class="blog-content p-4">
+            <div class="d-flex align-items-center gap-2 mb-3">
+              <span class="badge badge-custom">{{ post.author.username }}</span>
+              <span class="text-muted small">{{ post.date_posted|date:"M d, Y" }}</span>
+            </div>
+            
+            <h4 class="blog-title fw-bold mb-3">{{ post.title }}</h4>
+            
+            <p class="blog-excerpt text-muted mb-4">
+              {{ post.content|truncatewords:25 }}
+            </p>
+            
+            <a href="{% url 'post_detail' slug=post.slug %}" class="read-more-link">
+              Read Full Story
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" class="ms-1">
+                <path d="M8 0l8 8-8 8V0z"/>
+              </svg>
+            </a>
           </div>
         </div>
       </div>
     {% empty %}
-      <div class="text-center">
-        <p class="text-muted">No posts yet. Create your first one!</p>
-        <a href="{% url 'create_post' %}" class="btn btn-success">Create Post</a>
+      <div class="col-12">
+        <div class="empty-state text-center py-5">
+          <div class="mb-4" style="font-size: 4rem;">🌱</div>
+          <h4 class="fw-bold mb-3" style="color: #1a5f3f;">No Stories Yet</h4>
+          <p class="text-muted mb-4">Be the first to share your eco-journey!</p>
+          <a href="{% url 'create_post' %}" class="btn btn-custom px-5 py-3 rounded-pill">
+            Create Your First Post
+          </a>
+        </div>
       </div>
     {% endfor %}
   </div>
 </div>
 
-<!-- Hover & Card Styling -->
+
 <style>
-  .card {
-    min-height: 480px;
+  :root {
+    --primary-green: #2d8659;
+    --dark-green: #1a5f3f;
+    --light-green: #e8f5e9;
+    --accent-green: #4caf50;
+    --hover-green: #237a4a;
   }
-  .card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+
+
+  .hero-section {
+    background: linear-gradient(135deg, var(--dark-green) 0%, var(--primary-green) 100%);
+    border-radius: 0 0 50px 50px;
+    box-shadow: 0 10px 40px rgba(45, 134, 89, 0.2);
+  }
+
+
+  .about-card {
+    background: linear-gradient(135deg, #f8fff9 0%, var(--light-green) 100%);
+    border: 2px solid rgba(45, 134, 89, 0.1);
+    box-shadow: 0 8px 30px rgba(45, 134, 89, 0.08);
+  }
+
+
+  .btn-custom {
+    background: linear-gradient(135deg, var(--primary-green), var(--accent-green));
+    color: white;
+    border: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(45, 134, 89, 0.3);
+  }
+
+  .btn-custom:hover {
+    background: linear-gradient(135deg, var(--hover-green), var(--primary-green));
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(45, 134, 89, 0.4);
+    color: white;
+  }
+
+
+  .blog-card {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+  }
+
+  .blog-card:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 20px 40px rgba(45, 134, 89, 0.15);
+    border-color: var(--primary-green);
+  }
+
+
+  .blog-image-wrapper {
+    width: 100%;
+    height: 240px;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(135deg, var(--light-green), #fff);
+  }
+
+  .blog-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.6s ease;
+  }
+
+  .blog-card:hover .blog-image {
+    transform: scale(1.1);
+  }
+
+  .blog-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, transparent 0%, rgba(26, 95, 63, 0.1) 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .blog-card:hover .blog-overlay {
+    opacity: 1;
+  }
+
+ 
+  .blog-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .badge-custom {
+    background: var(--light-green);
+    color: var(--dark-green);
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+  }
+
+  .blog-title {
+    color: var(--dark-green);
+    font-size: 1.3rem;
+    line-height: 1.4;
+    transition: color 0.3s ease;
+  }
+
+  .blog-card:hover .blog-title {
+    color: var(--primary-green);
+  }
+
+  .blog-excerpt {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    flex-grow: 1;
+  }
+
+ 
+  .read-more-link {
+    color: var(--primary-green);
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.3s ease;
+  }
+
+  .read-more-link:hover {
+    color: var(--hover-green);
+    gap: 8px;
+  }
+
+  .read-more-link svg {
+    transition: transform 0.3s ease;
+  }
+
+  .read-more-link:hover svg {
+    transform: translateX(4px);
+  }
+
+
+  .empty-state {
+    background: linear-gradient(135deg, #f8fff9 0%, var(--light-green) 100%);
+    border-radius: 30px;
+    border: 2px dashed rgba(45, 134, 89, 0.3);
+  }
+
+
+  @media (max-width: 768px) {
+    .hero-section {
+      border-radius: 0 0 30px 30px;
+      padding: 3rem 0 !important;
+    }
+
+    .blog-image-wrapper {
+      height: 200px;
+    }
+
+    .blog-title {
+      font-size: 1.15rem;
+    }
   }
 </style>
 {% endblock %}

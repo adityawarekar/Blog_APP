@@ -1,9 +1,23 @@
 {% extends 'blog/base.html' %}
 {% block title %}Dashboard{% endblock %}
 {% block content %}
-<h2 class="text-success text-center mb-4">📈 Posts Analytics</h2>
-<div class="card shadow p-4">
-  <canvas id="postsChart"></canvas>
+<div class="container my-5">
+  <h2 class="text-success text-center mb-4">📈 Posts Analytics Dashboard</h2>
+  
+  <div class="row justify-content-center">
+    <div class="col-lg-10 col-md-12">
+      <div class="card shadow-lg border-0">
+        <div class="card-header bg-success text-white">
+          <h5 class="mb-0">Posts per Month</h5>
+        </div>
+        <div class="card-body p-4">
+          <div style="height: 400px; position: relative;">
+            <canvas id="postsChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -18,11 +32,21 @@ new Chart(ctx, {
     datasets: [{
       label: 'Posts per Month',
       data: data,
-      borderWidth: 1,
-      backgroundColor: '#198754'
+      borderWidth: 2,
+      backgroundColor: 'rgba(25, 135, 84, 0.7)',
+      borderColor: '#198754',
+      borderRadius: 5
     }]
   },
-  options: { scales: { y: { beginAtZero: true } } }
+  options: { 
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: { 
+      y: { 
+        beginAtZero: true 
+      } 
+    } 
+  }
 });
 </script>
 {% endblock %}

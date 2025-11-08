@@ -6,6 +6,8 @@ from django.http import JsonResponse
 from django.db.models import Q, Count
 from django.db.models.functions import TruncMonth
 from .models import Posts, Comment, Profile, Notification
+from .models import Posts as Post
+
 from .forms import ProfileForm
 import json
 
@@ -91,6 +93,16 @@ def explore_view(request):
             Q(author__first_name__icontains=q)
         )
     return render(request, 'blog/explore.html', {'posts': posts, 'q': q})
+
+
+def delete_post(request, slug):
+    post = get_object_or_404(Post, slug=slug, author=request.user)  # only allow the author
+    if request.method == "POST":
+        post.delete()
+        messages.success(request, "✅ Your post has been deleted successfully.")
+        return redirect('home')  # or 'dashboard' if you want
+    return render(request, 'blog/confirm_delete.html', {'post': post})
+
 
 
 def post_detail_view(request, slug):

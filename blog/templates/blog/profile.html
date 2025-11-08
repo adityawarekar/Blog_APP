@@ -1,32 +1,396 @@
 {% extends 'blog/base.html' %}
 {% block title %}Profile{% endblock %}
 {% block content %}
-<div class="text-center mb-4">
-  <h3 class="text-success fw-bold">👤 {{ user.first_name }}’s Profile</h3>
-  {% if user.profile.avatar %}
-    <img src="{{ user.profile.avatar.url }}" class="rounded-circle shadow" width="120" height="120">
-  {% else %}
-    <img src="https://via.placeholder.com/120" class="rounded-circle shadow">
-  {% endif %}
-  <p class="text-muted mt-2">{{ user.email }}</p>
-</div>
 
-<form method="POST" enctype="multipart/form-data" class="card p-4 mb-5 shadow">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button class="btn btn-success w-100">Update Profile</button>
-</form>
 
-<h4 class="text-success mb-3">My Posts</h4>
-{% for post in posts %}
-<div class="card mb-3 shadow-sm">
-  <div class="card-body">
-    <h5>{{ post.title }}</h5>
-    <p>{{ post.content|truncatechars:150 }}</p>
-    <a href="{% url 'post_detail' slug=post.slug %}" class="btn btn-outline-success btn-sm">View</a>
+<div class="profile-header py-5 mb-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        <div class="profile-card p-5 rounded-4">
+          <div class="row align-items-center">
+          
+            <div class="col-md-4 text-center mb-4 mb-md-0">
+              <div class="avatar-wrapper mx-auto">
+                {% if user.profile.avatar %}
+                  <img src="{{ user.profile.avatar.url }}" class="profile-avatar" alt="{{ user.first_name }}">
+                {% else %}
+                  <img src="https://via.placeholder.com/150" class="profile-avatar" alt="Default Avatar">
+                {% endif %}
+                <div class="avatar-badge">
+                  <svg width="20" height="20" fill="white" viewBox="0 0 16 16">
+                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+                  </svg>
+                </div>
+              </div>
+              <h3 class="fw-bold mt-4 mb-2" style="color: #1a5f3f;">{{ user.first_name }} {{ user.last_name }}</h3>
+              <p class="text-muted mb-2">@{{ user.username }}</p>
+              <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill">
+                🌿 Eco Blogger
+              </span>
+            </div>
+
+           
+            <div class="col-md-8">
+              <div class="profile-stats mb-4">
+                <div class="row text-center">
+                  <div class="col-4">
+                    <div class="stat-box p-3 rounded-3">
+                      <h4 class="fw-bold mb-1" style="color: #2d8659;">{{ posts.count }}</h4>
+                      <p class="text-muted small mb-0">Posts</p>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="stat-box p-3 rounded-3">
+                      <h4 class="fw-bold mb-1" style="color: #2d8659;">0</h4>
+                      <p class="text-muted small mb-0">Followers</p>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="stat-box p-3 rounded-3">
+                      <h4 class="fw-bold mb-1" style="color: #2d8659;">0</h4>
+                      <p class="text-muted small mb-0">Following</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              
+              <div class="bio-section p-4 rounded-3 mb-3">
+                <div class="d-flex align-items-center mb-2">
+                  <svg width="18" height="18" fill="#2d8659" viewBox="0 0 16 16" class="me-2">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                    <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                  </svg>
+                  <h6 class="fw-bold mb-0" style="color: #1a5f3f;">About Me</h6>
+                </div>
+                {% if user.profile.bio %}
+                  <p class="bio-text mb-0">{{ user.profile.bio }}</p>
+                {% else %}
+                  <p class="bio-text text-muted fst-italic mb-0">No bio added yet. Share something about yourself!</p>
+                {% endif %}
+              </div>
+
+              
+              <div class="contact-info">
+                <div class="d-flex align-items-center text-muted">
+                  <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="me-2">
+                    <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z"/>
+                  </svg>
+                  <span>{{ user.email }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
-{% empty %}
-<p class="text-muted text-center">You haven’t posted yet.</p>
-{% endfor %}
+
+
+<div class="container mb-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="form-card p-5 rounded-4">
+        <div class="d-flex align-items-center mb-4">
+          <div class="form-icon me-3">
+            <svg width="24" height="24" fill="white" viewBox="0 0 16 16">
+              <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+            </svg>
+          </div>
+          <h4 class="fw-bold mb-0" style="color: #1a5f3f;">Edit Profile</h4>
+        </div>
+
+        <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          
+          <div class="row g-4">
+            {% for field in form %}
+              <div class="col-md-{% if field.name == 'bio' %}12{% else %}6{% endif %}">
+                <label class="form-label fw-semibold" style="color: #1a5f3f;">
+                  {{ field.label }}
+                  {% if field.field.required %}<span class="text-danger">*</span>{% endif %}
+                </label>
+                
+                {% if field.name == 'bio' %}
+                  <textarea 
+                    name="{{ field.name }}" 
+                    class="form-control form-control-custom bio-input" 
+                    rows="5" 
+                    placeholder="Tell us about yourself, your eco journey, and what inspires you..."
+                    {% if field.field.required %}required{% endif %}>{{ field.value|default:'' }}</textarea>
+                  <div class="form-text">Share your passion for sustainability and what makes you unique!</div>
+                {% elif field.name == 'avatar' %}
+                  <input 
+                    type="file" 
+                    name="{{ field.name }}" 
+                    class="form-control form-control-custom" 
+                    accept="image/*"
+                    {% if field.field.required %}required{% endif %}>
+                  <div class="form-text">Upload a profile picture (JPG, PNG, max 5MB)</div>
+                {% else %}
+                  {{ field }}
+                {% endif %}
+                
+                {% if field.errors %}
+                  <div class="text-danger small mt-1">{{ field.errors }}</div>
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+
+          <div class="d-grid gap-2 mt-4">
+            <button type="submit" class="btn btn-custom py-3 rounded-pill fw-semibold">
+              Save Changes
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="ms-2">
+                <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+              </svg>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="container mb-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+          <h4 class="fw-bold mb-1" style="color: #1a5f3f;">My Eco Stories</h4>
+          <p class="text-muted mb-0">Articles you've shared with the community</p>
+        </div>
+        <a href="{% url 'create_post' %}" class="btn btn-outline-success rounded-pill px-4">
+          + New Post
+        </a>
+      </div>
+
+      <div class="row row-cols-1 row-cols-md-2 g-4">
+        {% for post in posts %}
+          <div class="col">
+            <div class="post-card h-100 p-4 rounded-4">
+              <div class="d-flex justify-content-between align-items-start mb-3">
+                <span class="badge bg-success-subtle text-success rounded-pill px-3 py-2">
+                  {{ post.date_posted|date:"M d, Y" }}
+                </span>
+                <div class="dropdown">
+                  <button class="btn btn-sm btn-light rounded-circle" type="button" data-bs-toggle="dropdown">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                      <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                    </svg>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Edit</a></li>
+                    <li><a class="dropdown-item text-danger" href="#">Delete</a></li>
+                  </ul>
+                </div>
+              </div>
+              
+              <h5 class="fw-bold mb-3" style="color: #1a5f3f;">{{ post.title }}</h5>
+              <p class="text-muted mb-4">{{ post.content|truncatechars:120 }}</p>
+              
+              <a href="{% url 'post_detail' slug=post.slug %}" class="read-link">
+                Read Article
+                <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16" class="ms-1">
+                  <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+        {% empty %}
+          <div class="col-12">
+            <div class="empty-posts text-center py-5 rounded-4">
+              <div class="mb-4" style="font-size: 4rem;">📝</div>
+              <h5 class="fw-bold mb-3" style="color: #1a5f3f;">No Posts Yet</h5>
+              <p class="text-muted mb-4">Start sharing your eco-friendly journey with the community!</p>
+              <a href="{% url 'create_post' %}" class="btn btn-custom px-5 py-3 rounded-pill">
+                Create Your First Post
+              </a>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  :root {
+    --primary-green: #2d8659;
+    --dark-green: #1a5f3f;
+    --light-green: #e8f5e9;
+    --accent-green: #4caf50;
+    --hover-green: #237a4a;
+  }
+
+
+  .profile-header {
+    background: linear-gradient(135deg, var(--dark-green) 0%, var(--primary-green) 100%);
+    margin-top: -20px;
+  }
+
+  .profile-card {
+    background: white;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  }
+
+  .avatar-wrapper {
+    position: relative;
+    width: 150px;
+    height: 150px;
+  }
+
+  .profile-avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 5px solid white;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  }
+
+  .avatar-badge {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--accent-green), var(--primary-green));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+
+
+  .stat-box {
+    background: var(--light-green);
+    transition: all 0.3s ease;
+  }
+
+  .stat-box:hover {
+    background: linear-gradient(135deg, var(--light-green), #d4edda);
+    transform: translateY(-3px);
+  }
+
+
+  .bio-section {
+    background: linear-gradient(135deg, #f8fff9, var(--light-green));
+    border: 2px solid rgba(45, 134, 89, 0.1);
+  }
+
+  .bio-text {
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: #555;
+  }
+
+
+  .form-card {
+    background: white;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+  }
+
+  .form-icon {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, var(--primary-green), var(--accent-green));
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(45, 134, 89, 0.3);
+  }
+
+  .form-control-custom {
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 12px 16px;
+    transition: all 0.3s ease;
+  }
+
+  .form-control-custom:focus {
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 0.2rem rgba(45, 134, 89, 0.15);
+  }
+
+  .bio-input {
+    min-height: 140px;
+    resize: vertical;
+  }
+
+
+  .btn-custom {
+    background: linear-gradient(135deg, var(--primary-green), var(--accent-green));
+    color: white;
+    border: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(45, 134, 89, 0.3);
+  }
+
+  .btn-custom:hover {
+    background: linear-gradient(135deg, var(--hover-green), var(--primary-green));
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(45, 134, 89, 0.4);
+    color: white;
+  }
+
+
+  .post-card {
+    background: white;
+    border: 2px solid rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+  }
+
+  .post-card:hover {
+    border-color: var(--primary-green);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(45, 134, 89, 0.15);
+  }
+
+  .read-link {
+    color: var(--primary-green);
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.3s ease;
+  }
+
+  .read-link:hover {
+    color: var(--hover-green);
+    gap: 6px;
+  }
+
+  
+  .empty-posts {
+    background: linear-gradient(135deg, #f8fff9, var(--light-green));
+    border: 2px dashed rgba(45, 134, 89, 0.3);
+  }
+
+
+  @media (max-width: 768px) {
+    .profile-card {
+      padding: 2rem !important;
+    }
+
+    .avatar-wrapper,
+    .profile-avatar {
+      width: 120px;
+      height: 120px;
+    }
+
+    .form-card {
+      padding: 2rem !important;
+    }
+  }
+</style>
+
 {% endblock %}

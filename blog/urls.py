@@ -13,4 +13,5 @@ urlpatterns = [
     path('notifications/', views.notifications_view, name='notifications'),
     path('post/<int:post_id>/like/', views.toggle_like, name='toggle_like'),
     path('post/<slug:slug>/', views.post_detail_view, name='post_detail'),
-]
+    path('post/<slug:slug>/delete/', views.delete_post, name='delete_post'),
+] 

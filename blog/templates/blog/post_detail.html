@@ -30,7 +30,7 @@
 
           <hr class="my-4">
 
-          <!-- Like Button -->
+          
           <div class="d-flex align-items-center mb-3">
             <button class="btn btn-outline-success rounded-pill px-4" id="likeBtn">
               ❤️ Like ({{ post.likes.count }})
@@ -46,7 +46,7 @@
           };
           </script>
 
-          <!-- Comments -->
+          
           <hr class="my-4">
           <h5 class="fw-bold text-success mb-3">💬 Comments ({{ post.comments.count }})</h5>
 
@@ -70,9 +70,17 @@
           {% endif %}
         </div>
 
-        <div class="card-footer bg-light border-0 text-center py-3">
+       
+        <div class="card-footer bg-light border-0 text-center py-3 d-flex justify-content-center gap-3 flex-wrap">
           <a href="{% url 'home' %}" class="btn btn-success rounded-pill px-4">⬅ Back to Home</a>
+
+          {% if user == post.author %}
+          <a href="{% url 'delete_post' slug=post.slug %}" class="btn btn-outline-danger rounded-pill px-4">
+            🗑️ Delete Post
+          </a>
+          {% endif %}
         </div>
+
       </div>
     </div>
   </div>

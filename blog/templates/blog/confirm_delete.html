@@ -1,0 +1,20 @@
+{% extends 'blog/base.html' %}
+{% block title %}Delete Post{% endblock %}
+
+{% block content %}
+<div class="container py-5 text-center">
+  <div class="card shadow border-0 mx-auto" style="max-width: 500px;">
+    <div class="card-body p-4">
+      <h4 class="text-danger fw-bold mb-3">⚠️ Delete Blog Post</h4>
+      <p class="text-muted">Are you sure you want to delete the post:</p>
+      <h5 class="fw-semibold mb-4">“{{ post.title }}”</h5>
+
+      <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger w-100 rounded-pill mb-2">Delete</button>
+        <a href="{% url 'post_detail' slug=post.slug %}" class="btn btn-outline-success w-100 rounded-pill">Cancel</a>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
