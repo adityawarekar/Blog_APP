@@ -96,11 +96,11 @@ def explore_view(request):
 
 
 def delete_post(request, slug):
-    post = get_object_or_404(Post, slug=slug, author=request.user)  # only allow the author
+    post = get_object_or_404(Post, slug=slug, author=request.user) 
     if request.method == "POST":
         post.delete()
         messages.success(request, "✅ Your post has been deleted successfully.")
-        return redirect('home')  # or 'dashboard' if you want
+        return redirect('home') 
     return render(request, 'blog/confirm_delete.html', {'post': post})
 
 

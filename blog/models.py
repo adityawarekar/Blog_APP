@@ -52,7 +52,7 @@ class Comment(models.Model):
 class Notification(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notifications')  
     actor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='actor_notifications')  
-    verb = models.CharField(max_length=255)  # e.g., liked, commented
+    verb = models.CharField(max_length=255)  
     target_post = models.ForeignKey(Posts, on_delete=models.CASCADE, null=True, blank=True)
     read = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
